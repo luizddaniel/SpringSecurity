@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>List Users</title>
+	
+</h:head>
+<h:body>
+	<h:form>
+		<p:fieldset legend="System Tasks">
+			<p:menubar>
+				<p:menuitem value="Task Managed" url="index.xhtml"></p:menuitem>
+				<p:menuitem value="User Managed" url="user.xhtml"></p:menuitem>
+				<p:menuitem value="Logout" align="right" url="/SpringSecurity/j_spring_security_logout" icon="ui-icon-extlink"></p:menuitem>
+			</p:menubar>
+			
+		</p:fieldset>
+	</h:form>
+	<h:form>
+		<p:messages autoUpdate="true" showDetail="true"></p:messages>
+		<p:fieldset legend="Users">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="New User" icon="ui-icon-document"
+						action="#{userBean.novo()}" disabled="#{userBean.inseri == true}"
+						update="@form"></p:commandButton>
+					<p:commandButton value="List" icon="ui-icon-search"
+						onclick="#{userBean.buscar()}"
+						actionListener="#{userBean.buscar()}"
+						disabled="#{userBean.inseri == true}" update="@form"></p:commandButton>
+					<span class="ui-separator"> <span
+						class="ui-icon ui-icon-grip-dotted-vertical" /></span>
+					<p:button outcome="index.xhtml" value="Exit" icon="ui-icon-extlink"
+						update="@form"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:panelGrid columns="2" rendered="#{userBean.busca == false}">
+				<h:outputLabel for="nome" value="Name"></h:outputLabel>
+				<p:inputText id="nome" value="#{userBean.entidade.nome}"
+					placeholder="Name" />
+
+				<h:outputLabel for="email" value="Email"></h:outputLabel>
+				<p:inputText id="email" value="#{userBean.entidade.email}"
+					style="width:610px" placeholder="Email"></p:inputText>
+
+				<h:outputLabel for="login" value="Login"></h:outputLabel>
+				<p:inputText id="login" value="#{userBean.entidade.login}"
+					placeholder="Login" />
+
+				<h:outputLabel for="password" value="Password"></h:outputLabel>
+				<p:password id="password" value="#{userBean.entidade.password}"
+					style="width:610px" placeholder="Password"></p:password>
+
+				<p:commandButton value="Salvar" icon="ui-icon-disk"
+					action="#{userBean.salvar()}" update="@form"></p:commandButton>
+				<p:commandButton value="Cancel" icon="ui-icon-trash"
+					action="#{userBean.buscar()}" update="@form"></p:commandButton>
+			</p:panelGrid>
+			<p:dataTable id="userTable" value="#{userBean.entidades}" var="user"
+				widgetVar="userTable" rendered="#{userBean.busca == true}"
+				action="#{userBean.buscar()}" update="@form"
+				style="margin-bottom:30px" rows="10" paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">>>
+                <p:column headerText="Id" filterBy="#{user.id}"
+					style="width:35px">
+					<h:outputText value="#{user.id}" />
+				</p:column>
+				<p:column headerText="Name" filterBy="#{user.nome}"
+					style="width:105px">
+					<h:outputText value="#{user.nome}" />
+				</p:column>
+				<p:column headerText="Email" filterBy="#{user.email}">
+					<h:outputText value="#{user.email}" />
+				</p:column>
+				<p:column headerText="Login" filterBy="#{user.login}"
+					style="width:75px">
+					<h:outputText value="#{user.login}" />
+				</p:column>
+				<p:column headerText="Password" filterBy="#{user.password}"
+					style="width:105px">
+					<h:outputText value="#{user.password}" />
+				</p:column>
+				<p:column headerText="Action" style="width:95px">
+					<p:commandButton title="Edit" icon="ui-icon-pencil"
+						action="#{userBean.editar(user)}" update="@form"></p:commandButton>
+					
+					<p:commandButton title="Delete" icon="ui-icon-trash"
+						action="#{userBean.delete}" actionListener="#{userBean.deletar(user)}" update="@form">
+						 <p:confirm header="Confirmation" message="You want to delete the code register #{user.id} ?" icon="ui-icon-alert" />
+						</p:commandButton>
+						 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+      				  	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        				<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    					</p:confirmDialog>
+				</p:column>
+			</p:dataTable>
+		</p:fieldset>
+	</h:form>
+</h:body>
+</html>

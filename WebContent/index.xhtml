@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>System Tasks</title>
+	
+</h:head>
+<h:body>
+	<h:form>
+		<p:fieldset legend="System Tasks">
+			<p:menubar>
+				<p:menuitem value="Task Managed" url="index.xhtml"></p:menuitem>
+				<p:menuitem value="User Managed" url="user.xhtml"></p:menuitem>
+				<p:menuitem value="Logout" align="right" url="/SpringSecurity/j_spring_security_logout" icon="ui-icon-extlink"></p:menuitem>
+			</p:menubar>
+		</p:fieldset>
+	</h:form>
+	<h:form>
+		<p:messages autoUpdate="true" showDetail="true"></p:messages>
+		<p:fieldset legend="Tasks">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="New Task" icon="ui-icon-document"
+						action="#{taskBean.novo()}" disabled="#{taskBean.inseri == true}"
+						update="@form"></p:commandButton>
+					<p:commandButton value="List" icon="ui-icon-search"
+						onclick="#{taskBean.buscar()}"
+						actionListener="#{taskBean.buscar()}"
+						disabled="#{taskBean.inseri == true}" update="@form"></p:commandButton>
+					<span class="ui-separator"> <span
+						class="ui-icon ui-icon-grip-dotted-vertical" /></span>
+					<!-- <p:button outcome="index.xhtml" value="Exit" icon="ui-icon-extlink" disabled="#{taskBean.inseri == true}" update="@form"></p:button> -->
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:panelGrid columns="2" rendered="#{taskBean.busca == false}">
+				<h:outputLabel for="data_inicio" value="Date Init"></h:outputLabel>
+				<p:calendar id="data_inicio"
+					value="#{taskBean.entidade.data_inicio}" />
+				<h:outputLabel for="description" value="Descripition"></h:outputLabel>
+				<p:inputTextarea id="description"
+					value="#{taskBean.entidade.descripition}" style="width:610px"
+					placeholder="Descripition"></p:inputTextarea>
+				<h:outputLabel for="status" value="Status"></h:outputLabel>
+				<p:selectOneMenu id="status" value="#{taskBean.entidade.status}"
+					style="width:230px">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItem itemLabel="Pending" itemValue="Pending" />
+					<f:selectItem itemLabel="Progress" itemValue="Progress" />
+					<f:selectItem itemLabel="Done" itemValue="Done" />
+				</p:selectOneMenu>
+				<h:outputLabel for="data_fim" value="Date End"></h:outputLabel>
+				<p:calendar id="data_fim" value="#{taskBean.entidade.data_fim}" />
+				<p:commandButton value="Salvar" icon="ui-icon-disk"
+					action="#{taskBean.salvar()}" update="@form"></p:commandButton>
+				<p:commandButton value="Cancel" icon="ui-icon-trash"
+					action="#{taskBean.buscar()}" update="@form"></p:commandButton>
+			</p:panelGrid>
+			<p:dataTable id="taskTable" value="#{taskBean.entidades}" var="task"
+				widgetVar="taskTable" rendered="#{taskBean.busca == true}"
+				action="#{taskBean.buscar()}" update="@form"
+				style="margin-bottom:30px" rows="10" paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">>>
+                <p:column headerText="Id" filterBy="#{task.id}"
+					style="width:35px">
+					<h:outputText value="#{task.id}" />
+				</p:column>
+				<p:column headerText="Start Date" filterBy="#{task.data_inicio}"
+					style="width:105px">
+					<h:outputText value="#{task.data_inicio}">
+						<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Descripition" filterBy="#{task.descripition}">
+					<h:outputText value="#{task.descripition}" />
+				</p:column>
+				<p:column headerText="Status" filterBy="#{task.status}"
+					style="width:75px">
+					<h:outputText value="#{task.status}" />
+				</p:column>
+				<p:column headerText="Final Date" filterBy="#{task.data_fim}"
+					style="width:105px">
+					<h:outputText value="#{task.data_fim}">
+						<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Action" style="width:95px">
+					<p:commandButton title="Edit" icon="ui-icon-pencil"
+						action="#{taskBean.editar(task)}" update="@form"></p:commandButton>
+					<p:commandButton title="Delete" icon="ui-icon-trash"
+						action="#{taskBean.delete}"
+						actionListener="#{taskBean.deletar(task)}" update="@form">
+						<p:confirm header="Confirmation"
+							message="You want to delete the code register #{task.id} ?" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Yes" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="No" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:column>
+			</p:dataTable>
+		</p:fieldset>
+	</h:form>
+</h:body>
+</html>
