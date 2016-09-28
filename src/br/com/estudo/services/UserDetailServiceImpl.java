@@ -1,5 +1,4 @@
 package br.com.estudo.services;
-import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,18 +8,21 @@ import br.com.estudo.model.UserDAO;
 import br.com.estudo.model.UserDetailsImpl;
 import br.com.estudo.model.UserImp;
 
-
 public class UserDetailServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 
-				
-		if (username.equalsIgnoreCase(username)) {
+		UserDAO userDAO = new UserDAO();
+		UserImp userImp;
+		
+		userImp = userDAO.findByUserName(username);
+		
+		if (userImp.getLogin().equalsIgnoreCase(username)) {
 			UserDetailsImpl user = new UserDetailsImpl();
-			user.setUserName(username);
-			user.setPassword("1234");
+			user.setUserName(userImp.getLogin());
+			user.setPassword(userImp.getPassword());
 			user.addAuthority("ROLE_USER");
 			return user;
 		}
