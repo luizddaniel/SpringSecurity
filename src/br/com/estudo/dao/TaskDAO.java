@@ -1,12 +1,16 @@
-package br.com.estudo.model;
+package br.com.estudo.dao;
 
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
-import br.com.estudo.controller.HibernateUtil;
+import org.springframework.stereotype.Repository;
 
+import br.com.estudo.controller.HibernateUtil;
+import br.com.estudo.model.TaskImp;
+
+@Repository
 public class TaskDAO implements CrudDAO<TaskImp> {
 
 	private Session session;
@@ -45,7 +49,7 @@ public class TaskDAO implements CrudDAO<TaskImp> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List listar() {
-		session = HibernateUtil.getSessionFactory().openSession();
+		session =  HibernateUtil.getSessionFactory().openSession();
 
 		try {
 			Criteria cri = session.createCriteria(TaskImp.class);

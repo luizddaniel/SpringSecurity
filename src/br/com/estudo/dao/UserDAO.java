@@ -1,14 +1,13 @@
-package br.com.estudo.model;
+package br.com.estudo.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 import br.com.estudo.controller.HibernateUtil;
+import br.com.estudo.model.UserImp;
 
 public class UserDAO implements CrudDAO<UserImp> {
 
@@ -62,7 +61,7 @@ public class UserDAO implements CrudDAO<UserImp> {
 		}
 
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserImp> listar() throws Error {
@@ -76,21 +75,20 @@ public class UserDAO implements CrudDAO<UserImp> {
 
 		}
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	public UserImp findByUserName(String username) {
 		session = HibernateUtil.getSessionFactory().openSession();
-		
+
 		List<UserImp> users = new ArrayList<UserImp>();
 		UserImp userImp = new UserImp();
-		
+
 		Criteria cri = session.createCriteria(UserImp.class);
 		users = cri.list();
-		
+
 		for (UserImp user : users) {
-			if(username.equals(user.getLogin())){
-				userImp = user;		
+			if (username.equals(user.getLogin())) {
+				userImp = user;
 			} else {
 				userImp.setLogin("adm");
 				userImp.setPassword("adm");

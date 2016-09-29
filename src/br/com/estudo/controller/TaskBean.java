@@ -5,13 +5,18 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import br.com.estudo.model.TaskDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import br.com.estudo.dao.TaskDAO;
 import br.com.estudo.model.TaskImp;
 
-@ManagedBean
 @SessionScoped
+@ManagedBean
+@Controller
 public class TaskBean extends CrudBean<TaskImp, TaskDAO> {
 
+	@Autowired
 	private TaskDAO taskDAO;
 
 	@Override

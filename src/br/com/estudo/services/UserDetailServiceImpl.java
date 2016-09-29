@@ -4,7 +4,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import br.com.estudo.model.UserDAO;
+import br.com.estudo.dao.UserDAO;
 import br.com.estudo.model.UserDetailsImpl;
 import br.com.estudo.model.UserImp;
 

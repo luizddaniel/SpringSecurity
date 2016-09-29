@@ -5,11 +5,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import br.com.estudo.model.UserDAO;
+import br.com.estudo.dao.UserDAO;
 import br.com.estudo.model.UserImp;
 
-@ManagedBean
+
 @SessionScoped
+@ManagedBean
 public class UserBean extends CrudBean<UserImp, UserDAO> {
 
 	private UserDAO userDAO;
